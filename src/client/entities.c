@@ -306,9 +306,10 @@ check_player_lerp(server_frame_t *oldframe, server_frame_t *frame, int framediv)
         goto dup;
 
     // no lerping if player entity was teleported (origin check)
-    if (abs(ops->pmove.origin[0] - ps->pmove.origin[0]) > 256 * 8 ||
-        abs(ops->pmove.origin[1] - ps->pmove.origin[1]) > 256 * 8 ||
-        abs(ops->pmove.origin[2] - ps->pmove.origin[2]) > 256 * 8) {
+#define MAX_SPEED           4096 // 4096 is the highest speed you can get
+    if (abs(ops->pmove.origin[0] - ps->pmove.origin[0]) > MAX_SPEED ||
+        abs(ops->pmove.origin[1] - ps->pmove.origin[1]) > MAX_SPEED ||
+        abs(ops->pmove.origin[2] - ps->pmove.origin[2]) > MAX_SPEED) {
         goto dup;
     }
 
