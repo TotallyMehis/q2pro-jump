@@ -380,8 +380,8 @@ void LOC_Init(void)
     loc_draw = Cvar_Get("loc_draw", "0", 0);
     loc_dist = Cvar_Get("loc_dist", "500", 0);
 
-    Cmd_AddMacro("loc_here", LOC_Here_m);
-    Cmd_AddMacro("loc_there", LOC_There_m);
+    Cmd_AddMacro("loc_here", LOC_Here_m, NULL);
+    Cmd_AddMacro("loc_there", LOC_There_m, NULL);
 
     Cmd_AddCommand("loc_add", LOC_Add_f);
     Cmd_AddCommand("loc_delete", LOC_Delete_f);

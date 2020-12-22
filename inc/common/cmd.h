@@ -98,12 +98,14 @@ typedef struct genctx_s {
 typedef void (*xcommand_t)(void);
 typedef void (*xcommandex_t)(cmdbuf_t *);
 typedef size_t (*xmacro_t)(char *, size_t);
+typedef color_t (*xdynamiccolor_t)(void);
 typedef void (*xcompleter_t)(struct genctx_s *, int);
 
 typedef struct cmd_macro_s {
     struct cmd_macro_s  *next, *hashNext;
     const char          *name;
     xmacro_t            function;
+    xdynamiccolor_t     colorfunction;
 } cmd_macro_t;
 
 typedef struct {
@@ -164,7 +166,7 @@ void Cmd_AddCommand(const char *cmd_name, xcommand_t function);
 void Cmd_Deregister(const cmdreg_t *reg);
 void Cmd_RemoveCommand(const char *cmd_name);
 
-void Cmd_AddMacro(const char *name, xmacro_t function);
+void Cmd_AddMacro(const char *name, xmacro_t function, xdynamiccolor_t colorfunction);
 
 from_t  Cmd_From(void);
 int     Cmd_Argc(void);

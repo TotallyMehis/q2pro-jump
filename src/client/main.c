@@ -2220,6 +2220,41 @@ static size_t CL_Ups_m(char *buffer, size_t size)
     return Q_scnprintf(buffer, size, "%.f", VectorLength(vel));
 }
 
+static color_t CL_Ups_dc()
+{
+    static float        prev_speed;
+    float               new_speed;
+    vec3_t              vel;
+    color_t             out_clr;
+
+    out_clr.u32 = U32_WHITE;
+
+    if (cl.frame.clientNum == CLIENTNUM_NONE) {
+        return out_clr;
+    }
+
+    if (!cls.demo.playback && cl.frame.clientNum == cl.clientNum &&
+        cl_predict->integer) {
+        VectorCopy(cl.predicted_velocity, vel);
+    } else {
+        VectorScale(cl.frame.ps.pmove.velocity, 0.125f, vel);
+    }
+    vel[2] = 0.0f;  // don't care about vertical speed in speedometer
+
+    // Compare speeds
+    new_speed = VectorLength(vel);
+    
+    if (new_speed > prev_speed) {
+        out_clr.u32 = U32_GREEN;
+    } else if (new_speed < prev_speed) {
+        out_clr.u32 = U32_RED;
+    }
+
+    prev_speed = new_speed;
+
+    return out_clr;
+}
+
 static size_t CL_Timer_m(char *buffer, size_t size)
 {
     int hour, min, sec;
@@ -2812,21 +2847,21 @@ static void CL_InitLocal(void)
     //
     // macros
     //
-    Cmd_AddMacro("cl_mapname", CL_Mapname_m);
-    Cmd_AddMacro("cl_server", CL_Server_m);
-    Cmd_AddMacro("cl_timer", CL_Timer_m);
-    Cmd_AddMacro("cl_demopos", CL_DemoPos_m);
-    Cmd_AddMacro("cl_ups", CL_Ups_m);
-    Cmd_AddMacro("cl_fps", CL_Fps_m);
-    Cmd_AddMacro("r_fps", R_Fps_m);
-    Cmd_AddMacro("cl_mps", CL_Mps_m);   // moves per second
-    Cmd_AddMacro("cl_pps", CL_Pps_m);   // packets per second
-    Cmd_AddMacro("cl_ping", CL_Ping_m);
-    Cmd_AddMacro("cl_lag", CL_Lag_m);
-    Cmd_AddMacro("cl_health", CL_Health_m);
-    Cmd_AddMacro("cl_ammo", CL_Ammo_m);
-    Cmd_AddMacro("cl_armor", CL_Armor_m);
-    Cmd_AddMacro("cl_weaponmodel", CL_WeaponModel_m);
+    Cmd_AddMacro("cl_mapname", CL_Mapname_m, NULL);
+    Cmd_AddMacro("cl_server", CL_Server_m, NULL);
+    Cmd_AddMacro("cl_timer", CL_Timer_m, NULL);
+    Cmd_AddMacro("cl_demopos", CL_DemoPos_m, NULL);
+    Cmd_AddMacro("cl_ups", CL_Ups_m, CL_Ups_dc);
+    Cmd_AddMacro("cl_fps", CL_Fps_m, NULL);
+    Cmd_AddMacro("r_fps", R_Fps_m, NULL);
+    Cmd_AddMacro("cl_mps", CL_Mps_m, NULL);   // moves per second
+    Cmd_AddMacro("cl_pps", CL_Pps_m, NULL);   // packets per second
+    Cmd_AddMacro("cl_ping", CL_Ping_m, NULL);
+    Cmd_AddMacro("cl_lag", CL_Lag_m, NULL);
+    Cmd_AddMacro("cl_health", CL_Health_m, NULL);
+    Cmd_AddMacro("cl_ammo", CL_Ammo_m, NULL);
+    Cmd_AddMacro("cl_armor", CL_Armor_m, NULL);
+    Cmd_AddMacro("cl_weaponmodel", CL_WeaponModel_m, NULL);
 }
 
 /*

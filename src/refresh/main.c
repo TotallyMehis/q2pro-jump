@@ -756,7 +756,7 @@ static void GL_Register(void)
     gl_modulate_entities_changed(NULL);
 
     Cmd_AddCommand("strings", GL_Strings_f);
-    Cmd_AddMacro("gl_viewcluster", GL_ViewCluster_m);
+    Cmd_AddMacro("gl_viewcluster", GL_ViewCluster_m, NULL);
 }
 
 static void GL_Unregister(void)

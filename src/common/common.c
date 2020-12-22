@@ -945,12 +945,12 @@ void Qcommon_Init(int argc, char **argv)
 
     //Cmd_AddCommand("setenv", Com_Setenv_f);
 
-    Cmd_AddMacro("com_date", Com_Date_m);
-    Cmd_AddMacro("com_time", Com_Time_m);
-    Cmd_AddMacro("com_uptime", Com_Uptime_m);
-    Cmd_AddMacro("com_uptime_long", Com_UptimeLong_m);
-    Cmd_AddMacro("random", Com_Random_m);
-    Cmd_AddMacro("com_maplist", Com_MapList_m);
+    Cmd_AddMacro("com_date", Com_Date_m, NULL);
+    Cmd_AddMacro("com_time", Com_Time_m, NULL);
+    Cmd_AddMacro("com_uptime", Com_Uptime_m, NULL);
+    Cmd_AddMacro("com_uptime_long", Com_UptimeLong_m, NULL);
+    Cmd_AddMacro("random", Com_Random_m, NULL);
+    Cmd_AddMacro("com_maplist", Com_MapList_m, NULL);
 
     // add any system-wide configuration files
     Sys_AddDefaultConfig();
