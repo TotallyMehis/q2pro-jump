@@ -2201,7 +2201,8 @@ static size_t CL_Server_m(char *buffer, size_t size)
 
 static size_t CL_Ups_m(char *buffer, size_t size)
 {
-    vec3_t vel;
+    vec3_t  vel;
+    float   speed;
 
     if (cl.frame.clientNum == CLIENTNUM_NONE) {
         if (size) {
@@ -2217,7 +2218,18 @@ static size_t CL_Ups_m(char *buffer, size_t size)
         VectorScale(cl.frame.ps.pmove.velocity, 0.125f, vel);
     }
     vel[2] = 0.0f;  // don't care about vertical speed in speedometer
-    return Q_scnprintf(buffer, size, "%.f", VectorLength(vel));
+
+    speed = VectorLength(vel);
+
+    // don't print anything if not moving as spectator.
+    if (cl.frame.ps.pmove.pm_type != PM_NORMAL && speed == 0) {
+        if (size) {
+            *buffer = 0;
+        }
+        return 0;
+    }
+
+    return Q_scnprintf(buffer, size, "%.f", speed);
 }
 
 static color_t CL_Ups_dc()
