@@ -20,6 +20,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "g_local.h"
 #include "m_player.h"
 
+#ifdef JUMP_MOD
+#include "jump/client.h"
+#include "jump/weapon.h"
+#endif
+
 
 static bool     is_quad;
 static byte     is_silenced;
@@ -119,6 +124,13 @@ bool Pickup_Weapon(edict_t *ent, edict_t *other)
         if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)))
             return false;   // leave the weapon for others to pickup
     }
+
+#ifdef JUMP_MOD // weapon finish check
+    if (Jump_Weapon_IsEnding(ent)) {
+        Jump_TouchEnd(other, ent);
+        return false;
+    }
+#endif
 
     other->client->pers.inventory[index]++;
 

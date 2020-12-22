@@ -232,6 +232,7 @@ void SV_CalcViewOffset(edict_t *ent)
         ent->client->ps.viewangles[PITCH] = -15;
         ent->client->ps.viewangles[YAW] = ent->client->killer_yaw;
     } else {
+#ifndef JUMP_MOD // disable weapon/damage view effects.
         // add angles based on weapon kick
 
         VectorCopy(ent->client->kick_angles, angles);
@@ -246,13 +247,16 @@ void SV_CalcViewOffset(edict_t *ent)
         }
         angles[PITCH] += ratio * ent->client->v_dmg_pitch;
         angles[ROLL] += ratio * ent->client->v_dmg_roll;
+#endif
 
+#ifndef JUMP_MOD // disable weapon/damage view effects.
         // add pitch based on fall kick
 
         ratio = (ent->client->fall_time - level.time) / FALL_TIME;
         if (ratio < 0)
             ratio = 0;
         angles[PITCH] += ratio * ent->client->fall_value;
+#endif
 
         // add angles based on velocity
 
@@ -286,12 +290,14 @@ void SV_CalcViewOffset(edict_t *ent)
 
     v[2] += ent->viewheight;
 
+#ifndef JUMP_MOD // disable weapon/damage view effects.
     // add fall height
 
     ratio = (ent->client->fall_time - level.time) / FALL_TIME;
     if (ratio < 0)
         ratio = 0;
     v[2] -= ratio * ent->client->fall_value * 0.4f;
+#endif
 
     // add bob height
 
@@ -301,9 +307,11 @@ void SV_CalcViewOffset(edict_t *ent)
     //gi.DebugGraph (bob *2, 255);
     v[2] += bob;
 
+#ifndef JUMP_MOD // disable weapon/damage view effects.
     // add kick offset
 
     VectorAdd(v, ent->client->kick_origin, v);
+#endif
 
     // absolutely bound offsets
     // so the view can never be outside the player box
@@ -965,8 +973,10 @@ void ClientEndServerFrame(edict_t *ent)
     // detect hitting the floor
     P_FallingDamage(ent);
 
+#ifndef JUMP_MOD // disable weapon/damage view effects.
     // apply all the damage taken this frame
     P_DamageFeedback(ent);
+#endif
 
     // determine the view offsets
     SV_CalcViewOffset(ent);

@@ -9,3 +9,11 @@
 /game*.dll
 /tags
 /TAGS
+
+/build/
+.vs/
+*.db
+*.ipch
+*.suo
+*.vcxproj.filters
+*.vcxproj.user

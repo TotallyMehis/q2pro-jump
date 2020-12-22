@@ -18,6 +18,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "g_local.h"
 
+#ifdef JUMP_MOD
+void Jump_WorldSpawn_Spawn(edict_t *ent);
+void Jump_SpawnEntities_Pre(void);
+void Jump_SpawnEntities_Post(void);
+#endif
+
 typedef struct {
     char    *name;
     void (*spawn)(edict_t *ent);
@@ -67,6 +73,9 @@ void SP_trigger_counter(edict_t *ent);
 void SP_trigger_elevator(edict_t *ent);
 void SP_trigger_gravity(edict_t *ent);
 void SP_trigger_monsterjump(edict_t *ent);
+#ifdef JUMP_MOD
+void SP_trigger_finish(edict_t *ent);
+#endif
 
 void SP_target_temp_entity(edict_t *ent);
 void SP_target_speaker(edict_t *ent);
@@ -185,6 +194,9 @@ static const spawn_func_t spawn_funcs[] = {
     {"trigger_elevator", SP_trigger_elevator},
     {"trigger_gravity", SP_trigger_gravity},
     {"trigger_monsterjump", SP_trigger_monsterjump},
+    #ifdef JUMP_MOD // our trigger entities.
+    {"trigger_finish", SP_trigger_finish},
+    #endif
 
     {"target_temp_entity", SP_target_temp_entity},
     {"target_speaker", SP_target_speaker},
@@ -324,6 +336,9 @@ static const spawn_field_t temp_fields[] = {
     {"minpitch", STOFS(minpitch), F_FLOAT},
     {"maxpitch", STOFS(maxpitch), F_FLOAT},
     {"nextmap", STOFS(nextmap), F_LSTRING},
+#ifdef JUMP_MOD // jump mod specific entity temp fields.
+    {"mset", STOFS(mset), F_LSTRING},
+#endif
 
     {NULL}
 };
@@ -597,6 +612,10 @@ void SpawnEntities(const char *mapname, const char *entities, const char *spawnp
     ent = NULL;
     inhibit = 0;
 
+#ifdef JUMP_MOD
+    Jump_SpawnEntities_Pre();
+#endif
+
 // parse ents
     while (1) {
         // parse the opening brace
@@ -657,6 +676,10 @@ void SpawnEntities(const char *mapname, const char *entities, const char *spawnp
     G_FindTeams();
 
     PlayerTrail_Init();
+
+#ifdef JUMP_MOD
+    Jump_SpawnEntities_Post();
+#endif
 }
 
 
@@ -842,6 +865,10 @@ void SP_worldspawn(edict_t *ent)
 
     //---------------
 
+#ifdef JUMP_MOD
+    Jump_WorldSpawn_Spawn(ent);
+#endif
+
     // reserve some spots for dead player bodies for coop / deathmatch
     InitBodyQue();
 
@@ -874,10 +901,14 @@ void SP_worldspawn(edict_t *ent)
     gi.configstring(CS_MAXCLIENTS, va("%i", (int)(maxclients->value)));
 
     // status bar program
+#ifdef JUMP_MOD // inject status bar here.
+    Jump_WriteStatusBar();
+#else
     if (deathmatch->value)
         gi.configstring(CS_STATUSBAR, dm_statusbar);
     else
         gi.configstring(CS_STATUSBAR, single_statusbar);
+#endif
 
     //---------------
 

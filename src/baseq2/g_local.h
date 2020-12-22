@@ -20,6 +20,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "shared/shared.h"
 #include "shared/list.h"
 
+#ifdef JUMP_MOD
+#include "jump/jump_game.h"
+#endif
+
 // define GAME_INCLUDE so that game.h does not define the
 // short, server-visible gclient_t and edict_t structures,
 // because we define the full size ones in this file
@@ -357,6 +361,9 @@ typedef struct {
     float       maxyaw;
     float       minpitch;
     float       maxpitch;
+#ifdef JUMP_MOD // jump mod specific entity temp fields.
+    char        *mset;
+#endif
 } spawn_temp_t;
 
 
@@ -872,6 +879,10 @@ struct gclient_s {
     client_persistant_t pers;
     client_respawn_t    resp;
     pmove_state_t       old_pmove;  // for detecting out-of-pmove changes
+
+#ifdef JUMP_MOD // inject our client specific data here.
+    jump_client_data_t      jump;
+#endif
 
     bool        showscores;         // set layout stat
     bool        showinventory;      // set layout stat

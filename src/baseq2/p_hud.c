@@ -17,6 +17,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 #include "g_local.h"
 
+#ifdef JUMP_MOD
+#include "jump/hud.h"
+#endif
 
 
 /*
@@ -352,6 +355,9 @@ G_SetStats
 */
 void G_SetStats(edict_t *ent)
 {
+#ifdef JUMP_MOD
+    Jump_SetStats(ent);
+#else
     gitem_t     *item;
     int         index, cells;
     int         power_armor_type;
@@ -475,6 +481,7 @@ void G_SetStats(edict_t *ent)
         ent->client->ps.stats[STAT_HELPICON] = 0;
 
     ent->client->ps.stats[STAT_SPECTATOR] = 0;
+#endif
 }
 
 /*
@@ -503,6 +510,9 @@ G_SetSpectatorStats
 */
 void G_SetSpectatorStats(edict_t *ent)
 {
+#ifdef JUMP_MOD
+    Jump_SetSpectatorStats(ent);
+#else
     gclient_t *cl = ent->client;
 
     if (!cl->chase_target)
@@ -522,4 +532,5 @@ void G_SetSpectatorStats(edict_t *ent)
                                    (cl->chase_target - g_edicts) - 1;
     else
         cl->ps.stats[STAT_CHASE] = 0;
+#endif
 }

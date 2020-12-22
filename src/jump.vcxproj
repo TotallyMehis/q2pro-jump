@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{82dceb53-0998-4b04-9278-d518636d981e}</ProjectGuid>
+    <RootNamespace>jump</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>gamex86</TargetName>
+    <IncludePath>$(ProjectDir)..\thirdparty\;$(ProjectDir)baseq2\;$(ProjectDir)..\inc\;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)..\build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)..\build\temp\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>gamex86</TargetName>
+    <IncludePath>$(ProjectDir)..\thirdparty\;$(ProjectDir)baseq2\;$(ProjectDir)..\inc\;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)..\build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)..\build\temp\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>gamex86_64</TargetName>
+    <IncludePath>$(ProjectDir)..\thirdparty\;$(ProjectDir)baseq2\;$(ProjectDir)..\inc\;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)..\build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)..\build\temp\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>gamex86_64</TargetName>
+    <IncludePath>$(ProjectDir)..\thirdparty\;$(ProjectDir)baseq2\;$(ProjectDir)..\inc\;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)..\build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)..\build\temp\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);JUMP_MOD</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);JUMP_MOD</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);JUMP_MOD</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);JUMP_MOD</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\thirdparty\sqlite\sqlite3.c" />
+    <ClCompile Include="baseq2\g_ai.c" />
+    <ClCompile Include="baseq2\g_chase.c" />
+    <ClCompile Include="baseq2\g_cmds.c" />
+    <ClCompile Include="baseq2\g_combat.c" />
+    <ClCompile Include="baseq2\g_func.c" />
+    <ClCompile Include="baseq2\g_items.c" />
+    <ClCompile Include="baseq2\g_main.c" />
+    <ClCompile Include="baseq2\g_misc.c" />
+    <ClCompile Include="baseq2\g_monster.c" />
+    <ClCompile Include="baseq2\g_phys.c" />
+    <ClCompile Include="baseq2\g_ptrs.c" />
+    <ClCompile Include="baseq2\g_save.c" />
+    <ClCompile Include="baseq2\g_spawn.c" />
+    <ClCompile Include="baseq2\g_svcmds.c" />
+    <ClCompile Include="baseq2\g_target.c" />
+    <ClCompile Include="baseq2\g_trigger.c" />
+    <ClCompile Include="baseq2\g_turret.c" />
+    <ClCompile Include="baseq2\g_utils.c" />
+    <ClCompile Include="baseq2\g_weapon.c" />
+    <ClCompile Include="baseq2\jump\client.c" />
+    <ClCompile Include="baseq2\jump\cmds.c" />
+    <ClCompile Include="baseq2\jump\database_sqlite.c" />
+    <ClCompile Include="baseq2\jump\hud.c" />
+    <ClCompile Include="baseq2\jump\main.c" />
+    <ClCompile Include="baseq2\jump\msets.c" />
+    <ClCompile Include="baseq2\jump\replay.c" />
+    <ClCompile Include="baseq2\jump\scoreboard.c" />
+    <ClCompile Include="baseq2\jump\threading.cpp" />
+    <ClCompile Include="baseq2\jump\trigger.c" />
+    <ClCompile Include="baseq2\jump\util.c" />
+    <ClCompile Include="baseq2\jump\voting.c" />
+    <ClCompile Include="baseq2\jump\weapon.c" />
+    <ClCompile Include="baseq2\m_actor.c" />
+    <ClCompile Include="baseq2\m_berserk.c" />
+    <ClCompile Include="baseq2\m_boss2.c" />
+    <ClCompile Include="baseq2\m_boss3.c" />
+    <ClCompile Include="baseq2\m_boss31.c" />
+    <ClCompile Include="baseq2\m_boss32.c" />
+    <ClCompile Include="baseq2\m_brain.c" />
+    <ClCompile Include="baseq2\m_chick.c" />
+    <ClCompile Include="baseq2\m_flipper.c" />
+    <ClCompile Include="baseq2\m_float.c" />
+    <ClCompile Include="baseq2\m_flyer.c" />
+    <ClCompile Include="baseq2\m_gladiator.c" />
+    <ClCompile Include="baseq2\m_gunner.c" />
+    <ClCompile Include="baseq2\m_hover.c" />
+    <ClCompile Include="baseq2\m_infantry.c" />
+    <ClCompile Include="baseq2\m_insane.c" />
+    <ClCompile Include="baseq2\m_medic.c" />
+    <ClCompile Include="baseq2\m_move.c" />
+    <ClCompile Include="baseq2\m_mutant.c" />
+    <ClCompile Include="baseq2\m_parasite.c" />
+    <ClCompile Include="baseq2\m_soldier.c" />
+    <ClCompile Include="baseq2\m_supertank.c" />
+    <ClCompile Include="baseq2\m_tank.c" />
+    <ClCompile Include="baseq2\p_client.c" />
+    <ClCompile Include="baseq2\p_hud.c" />
+    <ClCompile Include="baseq2\p_trail.c" />
+    <ClCompile Include="baseq2\p_view.c" />
+    <ClCompile Include="baseq2\p_weapon.c" />
+    <ClCompile Include="shared\m_flash.c" />
+    <ClCompile Include="shared\shared.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\inc\common\bsp.h" />
+    <ClInclude Include="..\inc\common\cmd.h" />
+    <ClInclude Include="..\inc\common\cmodel.h" />
+    <ClInclude Include="..\inc\common\common.h" />
+    <ClInclude Include="..\inc\common\cvar.h" />
+    <ClInclude Include="..\inc\common\error.h" />
+    <ClInclude Include="..\inc\common\field.h" />
+    <ClInclude Include="..\inc\common\fifo.h" />
+    <ClInclude Include="..\inc\common\files.h" />
+    <ClInclude Include="..\inc\common\math.h" />
+    <ClInclude Include="..\inc\common\mdfour.h" />
+    <ClInclude Include="..\inc\common\msg.h" />
+    <ClInclude Include="..\inc\common\net\chan.h" />
+    <ClInclude Include="..\inc\common\net\net.h" />
+    <ClInclude Include="..\inc\common\pmove.h" />
+    <ClInclude Include="..\inc\common\prompt.h" />
+    <ClInclude Include="..\inc\common\protocol.h" />
+    <ClInclude Include="..\inc\common\sizebuf.h" />
+    <ClInclude Include="..\inc\common\tests.h" />
+    <ClInclude Include="..\inc\common\utils.h" />
+    <ClInclude Include="..\inc\common\zone.h" />
+    <ClInclude Include="..\inc\format\bsp.h" />
+    <ClInclude Include="..\inc\format\md2.h" />
+    <ClInclude Include="..\inc\format\md3.h" />
+    <ClInclude Include="..\inc\format\pak.h" />
+    <ClInclude Include="..\inc\format\pcx.h" />
+    <ClInclude Include="..\inc\format\sp2.h" />
+    <ClInclude Include="..\inc\format\wal.h" />
+    <ClInclude Include="..\inc\shared\game.h" />
+    <ClInclude Include="..\inc\shared\list.h" />
+    <ClInclude Include="..\inc\shared\platform.h" />
+    <ClInclude Include="..\inc\shared\shared.h" />
+    <ClInclude Include="..\inc\system\hunk.h" />
+    <ClInclude Include="..\inc\system\system.h" />
+    <ClInclude Include="baseq2\g_local.h" />
+    <ClInclude Include="baseq2\g_ptrs.h" />
+    <ClInclude Include="baseq2\jump\client.h" />
+    <ClInclude Include="baseq2\jump\cmds.h" />
+    <ClInclude Include="baseq2\jump\database.h" />
+    <ClInclude Include="baseq2\jump\hud.h" />
+    <ClInclude Include="baseq2\jump\jump_game.h" />
+    <ClInclude Include="baseq2\jump\main.h" />
+    <ClInclude Include="baseq2\jump\msets.h" />
+    <ClInclude Include="baseq2\jump\replay.h" />
+    <ClInclude Include="baseq2\jump\stubs.h" />
+    <ClInclude Include="baseq2\jump\threading.h" />
+    <ClInclude Include="baseq2\jump\util.h" />
+    <ClInclude Include="baseq2\jump\voting.h" />
+    <ClInclude Include="baseq2\jump\weapon.h" />
+    <ClInclude Include="baseq2\m_actor.h" />
+    <ClInclude Include="baseq2\m_berserk.h" />
+    <ClInclude Include="baseq2\m_boss2.h" />
+    <ClInclude Include="baseq2\m_boss31.h" />
+    <ClInclude Include="baseq2\m_boss32.h" />
+    <ClInclude Include="baseq2\m_brain.h" />
+    <ClInclude Include="baseq2\m_chick.h" />
+    <ClInclude Include="baseq2\m_flipper.h" />
+    <ClInclude Include="baseq2\m_float.h" />
+    <ClInclude Include="baseq2\m_flyer.h" />
+    <ClInclude Include="baseq2\m_gladiator.h" />
+    <ClInclude Include="baseq2\m_gunner.h" />
+    <ClInclude Include="baseq2\m_hover.h" />
+    <ClInclude Include="baseq2\m_infantry.h" />
+    <ClInclude Include="baseq2\m_insane.h" />
+    <ClInclude Include="baseq2\m_medic.h" />
+    <ClInclude Include="baseq2\m_mutant.h" />
+    <ClInclude Include="baseq2\m_parasite.h" />
+    <ClInclude Include="baseq2\m_player.h" />
+    <ClInclude Include="baseq2\m_rider.h" />
+    <ClInclude Include="baseq2\m_soldier.h" />
+    <ClInclude Include="baseq2\m_supertank.h" />
+    <ClInclude Include="baseq2\m_tank.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

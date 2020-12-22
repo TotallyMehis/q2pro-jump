@@ -18,6 +18,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "g_local.h"
 #include "m_player.h"
 
+#ifdef JUMP_MOD
+#include "jump/cmds.h"
+#endif
 
 char *ClientTeam(edict_t *ent)
 {
@@ -849,6 +852,13 @@ void ClientCommand(edict_t *ent)
 
     if (!ent->client)
         return;     // not fully in game yet
+
+#ifdef JUMP_MOD // inject our own commands here.
+    jump_cmdret_t ret = Jump_ClientCommand(ent);
+
+    if (ret != JUMP_CMDRET_FAILED)
+        return;
+#endif
 
     cmd = gi.argv(0);
 

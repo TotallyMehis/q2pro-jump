@@ -18,6 +18,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "g_local.h"
 
+#ifdef JUMP_MOD
+void Jump_InitGame_Post(void);
+void Jump_ShutdownGame_Post(void);
+void Jump_RunFrame(void);
+void Jump_CheckGameRules(void);
+#endif
+
 game_locals_t   game;
 level_locals_t  level;
 game_import_t   gi;
@@ -97,6 +104,10 @@ void ShutdownGame(void)
 
     gi.FreeTags(TAG_LEVEL);
     gi.FreeTags(TAG_GAME);
+
+#ifdef JUMP_MOD
+    Jump_ShutdownGame_Post();
+#endif
 }
 
 /*
@@ -187,6 +198,10 @@ void InitGame(void)
     game.maxclients = maxclients->value;
     game.clients = gi.TagMalloc(game.maxclients * sizeof(game.clients[0]), TAG_GAME);
     globals.num_edicts = game.maxclients + 1;
+
+#ifdef JUMP_MOD
+    Jump_InitGame_Post();
+#endif
 }
 
 
@@ -470,6 +485,10 @@ void G_RunFrame(void)
     level.framenum++;
     level.time = level.framenum * FRAMETIME;
 
+#ifdef JUMP_MOD
+    Jump_RunFrame();
+#endif
+
     // choose a client for monsters to target this frame
     AI_SetSightClient();
 
@@ -510,7 +529,11 @@ void G_RunFrame(void)
     }
 
     // see if it is time to end a deathmatch
+#ifdef JUMP_MOD // we have our own game rule check.
+    Jump_CheckGameRules();
+#else
     CheckDMRules();
+#endif
 
     // see if needpass needs updated
     CheckNeedPass();

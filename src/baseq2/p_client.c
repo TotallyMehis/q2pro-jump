@@ -18,6 +18,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "g_local.h"
 #include "m_player.h"
 
+#ifdef JUMP_MOD
+#include "jump/client.h"
+#endif
+
 void ClientUserinfoChanged(edict_t *ent, char *userinfo);
 
 void SP_misc_teleporter_dest(edict_t *ent);
@@ -499,7 +503,9 @@ void player_die(edict_t *self, edict_t *inflictor, edict_t *attacker, int damage
         LookAtKiller(self, inflictor, attacker);
         self->client->ps.pmove.pm_type = PM_DEAD;
         ClientObituary(self, inflictor, attacker);
+#ifndef JUMP_MOD // Disable weapon dropping.
         TossClientWeapon(self);
+#endif
         if (deathmatch->value)
             Cmd_Help_f(self);       // show scores
 
@@ -573,6 +579,9 @@ but is called after each death and level change in deathmatch
 */
 void InitClientPersistant(gclient_t *client)
 {
+#ifdef JUMP_MOD
+    Jump_InitClientPersistant(client);
+#else
     gitem_t     *item;
 
     memset(&client->pers, 0, sizeof(client->pers));
@@ -594,6 +603,7 @@ void InitClientPersistant(gclient_t *client)
     client->pers.max_slugs      = 50;
 
     client->pers.connected = true;
+#endif
 }
 
 
@@ -602,6 +612,10 @@ void InitClientResp(gclient_t *client)
     memset(&client->resp, 0, sizeof(client->resp));
     client->resp.enterframe = level.framenum;
     client->resp.coop_respawn = client->pers;
+
+#ifdef JUMP_MOD
+    Jump_InitClientResp(client);
+#endif
 }
 
 /*
@@ -1063,6 +1077,10 @@ void PutClientInServer(edict_t *ent)
     client_persistant_t saved;
     client_respawn_t    resp;
 
+#ifdef JUMP_MOD
+    jump_client_persdata_t saved_jump;
+#endif
+
     // find a spawn point
     // do it before setting health back up, so farthest
     // ranging doesn't count this client
@@ -1102,9 +1120,17 @@ void PutClientInServer(edict_t *ent)
     }
 
     // clear everything but the persistant data
+#ifdef JUMP_MOD
+    saved_jump = client->jump.pers;
+#endif
     saved = client->pers;
     memset(client, 0, sizeof(*client));
     client->pers = saved;
+#ifdef JUMP_MOD
+    client->jump.pers = saved_jump;
+
+    Jump_PutClientInServer(ent);
+#endif
     if (client->pers.health <= 0)
         InitClientPersistant(client);
     client->resp = resp;
@@ -1121,7 +1147,11 @@ void PutClientInServer(edict_t *ent)
     ent->inuse = true;
     ent->classname = "player";
     ent->mass = 200;
+#ifdef JUMP_MOD
+    ent->solid = SOLID_TRIGGER;
+#else
     ent->solid = SOLID_BBOX;
+#endif
     ent->deadflag = DEAD_NO;
     ent->air_finished_framenum = level.framenum + 12 * BASE_FRAMERATE;
     ent->clipmask = MASK_PLAYERSOLID;
@@ -1195,9 +1225,11 @@ void PutClientInServer(edict_t *ent)
     } else
         client->resp.spectator = false;
 
+#ifndef JUMP_MOD // disable killing other players on player spawn.
     if (!KillBox(ent)) {
         // could't spawn in?
     }
+#endif
 
     gi.linkentity(ent);
 
@@ -1254,6 +1286,10 @@ void ClientBegin(edict_t *ent)
 
     ent->client = game.clients + (ent - g_edicts - 1);
 
+#ifdef JUMP_MOD
+    Jump_ClientBegin(ent);
+#endif
+
     if (deathmatch->value) {
         ClientBeginDeathmatch(ent);
         return;
@@ -1308,6 +1344,9 @@ The game can override any of the settings in place
 */
 void ClientUserinfoChanged(edict_t *ent, char *userinfo)
 {
+#ifdef JUMP_MOD
+    Jump_ClientUserinfoChanged(ent, userinfo);
+#else
     char    *s;
     int     playernum;
 
@@ -1355,6 +1394,7 @@ void ClientUserinfoChanged(edict_t *ent, char *userinfo)
 
     // save off the userinfo in case we want to check something later
     Q_strlcpy(ent->client->pers.userinfo, userinfo, sizeof(ent->client->pers.userinfo));
+#endif
 }
 
 
@@ -1450,6 +1490,10 @@ void ClientDisconnect(edict_t *ent)
     if (!ent->client)
         return;
 
+#ifdef JUMP_MOD
+    Jump_ClientDisconnect(ent);
+#endif
+
     gi.bprintf(PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
 
     // send effect
@@ -1524,6 +1568,10 @@ void ClientThink(edict_t *ent, usercmd_t *ucmd)
 
     level.current_entity = ent;
     client = ent->client;
+
+#ifdef JUMP_MOD
+    Jump_ClientThink_Pre(ent, ucmd);
+#endif
 
     if (level.intermission_framenum) {
         client->ps.pmove.pm_type = PM_FREEZE;
@@ -1679,6 +1727,10 @@ void ClientThink(edict_t *ent, usercmd_t *ucmd)
         if (other->inuse && other->client->chase_target == ent)
             UpdateChaseCam(other);
     }
+
+#ifdef JUMP_MOD
+    Jump_ClientThink_Post(ent, ucmd);
+#endif
 }
 
 
@@ -1700,12 +1752,14 @@ void ClientBeginServerFrame(edict_t *ent)
 
     client = ent->client;
 
+#ifndef JUMP_MOD
     if (deathmatch->value &&
         client->pers.spectator != client->resp.spectator &&
         (level.framenum - client->respawn_framenum) >= 5 * BASE_FRAMERATE) {
         spectator_respawn(ent);
         return;
     }
+#endif
 
     // run weapon animations if it hasn't been done by a ucmd_t
     if (!client->weapon_thunk && !client->resp.spectator)
