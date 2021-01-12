@@ -18,7 +18,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "server.h"
 #include "client/input.h"
-#include "speedrun/timer.h"
 
 pmoveParams_t   sv_pmp;
 
@@ -74,7 +73,6 @@ cvar_t  *sv_public;            // should heartbeats be sent
 cvar_t  *sv_debug;
 cvar_t  *sv_pad_packets;
 #endif
-cvar_t  *sv_force_rate;
 cvar_t  *sv_lan_force_rate;
 cvar_t  *sv_min_rate;
 cvar_t  *sv_max_rate;
@@ -1742,7 +1740,6 @@ static inline bool check_paused(void)
 #endif
 
     if (!sv_paused->integer) {
-        SpeedrunPauseTimer();
         Cvar_Set("sv_paused", "1");
         IN_Activate();
     }
@@ -1751,7 +1748,6 @@ static inline bool check_paused(void)
 
 resume:
     if (sv_paused->integer) {
-        SpeedrunUnpauseTimer();
         Cvar_Set("sv_paused", "0");
         IN_Activate();
     }
@@ -1775,7 +1771,7 @@ static void SV_RunGameFrame(void)
         time_before_game = Sys_Milliseconds();
 #endif
 
-    ge->RunFrame(true);
+    ge->RunFrame();
 
 #if USE_CLIENT
     if (host_speeds->integer)
@@ -2041,10 +2037,6 @@ void SV_UserinfoChanged(client_t *cl)
         cl->rate = 0;
     }
 
-    if (sv_force_rate->integer) {
-        cl->rate = 0;
-    }
-
     // msg command
     val = Info_ValueForKey(cl->userinfo, "msg");
     if (*val) {
@@ -2206,7 +2198,6 @@ void SV_Init(void)
     sv_debug = Cvar_Get("sv_debug", "0", 0);
     sv_pad_packets = Cvar_Get("sv_pad_packets", "0", 0);
 #endif
-    sv_force_rate = Cvar_Get("sv_force_rate", "0", CVAR_LATCH);
     sv_lan_force_rate = Cvar_Get("sv_lan_force_rate", "0", CVAR_LATCH);
     sv_min_rate = Cvar_Get("sv_min_rate", "100", CVAR_LATCH);
     sv_max_rate = Cvar_Get("sv_max_rate", "15000", CVAR_LATCH);

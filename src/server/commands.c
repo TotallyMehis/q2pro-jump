@@ -17,7 +17,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 #include "server.h"
-#include "speedrun/timer.h"
 
 /*
 ===============================================================================
@@ -401,7 +400,6 @@ static void SV_Map_f(void)
     if (res < 0)
         return;
 
-    SpeedrunResetTimer();
     SV_Map(res);
 }
 

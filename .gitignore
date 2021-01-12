@@ -2,8 +2,10 @@
 /.q2pro/
 /.q2proded/
 /.baseq2/
-/.rogue/
-/.xatrix/
-/build/
+/q2pro*
+/q2proded*
+/baseq2/
+/game*.so
+/game*.dll
 /tags
 /TAGS

@@ -2223,7 +2223,7 @@ fail:
     MVD_StopRecord(mvd);
 }
 
-static void MVD_GameRunFrame(bool is_frame_timed_speedrun)
+static void MVD_GameRunFrame(void)
 {
     mvd_t *mvd, *next;
     int numplayers = 0;
