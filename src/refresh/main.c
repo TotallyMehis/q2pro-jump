@@ -80,6 +80,10 @@ cvar_t *gl_vertexlight;
 cvar_t *gl_polyblend;
 cvar_t *gl_showerrors;
 
+// Mako - variables for cl_texture macro
+vec3_t m_PlayerPos;
+vec3_t m_PlayerAngles;
+
 // ==============================================================================
 
 static void GL_SetupFrustum(void)
@@ -514,6 +518,10 @@ void R_RenderFrame(refdef_t *fd)
 
     glr.fd = *fd;
     glr.num_beams = 0;
+
+	//Mako - cl_texture macro
+	VectorCopy(fd->vieworg, m_PlayerPos);
+	VectorCopy(fd->viewangles, m_PlayerAngles);
 
 #if USE_DLIGHTS
     if (gl_dynamic->integer != 1 || gl_vertexlight->integer) {

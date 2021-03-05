@@ -2353,6 +2353,22 @@ static size_t CL_WeaponModel_m(char *buffer, size_t size)
                        cl.configstrings[cl.frame.ps.gunindex + CS_MODELS]);
 }
 
+//Mako
+static size_t CL_Texture_m(char *buffer, size_t size)
+{
+	trace_t trace;
+	vec3_t forward, end;
+	vec3_t mins = { -1.f, -1.f, -1.f };
+	vec3_t maxs = { 1.f, 1.f, 1.f };
+	int mask = CONTENTS_SOLID | CONTENTS_WINDOW | CONTENTS_WATER | CONTENTS_SLIME | CONTENTS_LAVA;
+
+	AngleVectors(m_PlayerAngles, forward, NULL, NULL);
+	VectorMA(m_PlayerPos, 8192, forward, end);
+	CM_BoxTrace(&trace, m_PlayerPos, end, mins, maxs, cl.bsp->nodes, mask);
+
+	return Q_scnprintf(buffer, size, "%s", trace.surface->name);
+}
+
 /*
 ===============
 CL_WriteConfig
@@ -2874,6 +2890,7 @@ static void CL_InitLocal(void)
     Cmd_AddMacro("cl_ammo", CL_Ammo_m, NULL);
     Cmd_AddMacro("cl_armor", CL_Armor_m, NULL);
     Cmd_AddMacro("cl_weaponmodel", CL_WeaponModel_m, NULL);
+	Cmd_AddMacro("cl_texture", CL_Texture_m, NULL); //Mako
 }
 
 /*

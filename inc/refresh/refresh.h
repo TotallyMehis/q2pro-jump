@@ -225,4 +225,8 @@ void    R_BeginFrame(void);
 void    R_EndFrame(void);
 void    R_ModeChanged(int width, int height, int flags);
 
+// Mako - variables for cl_texture macro
+extern vec3_t m_PlayerPos;
+extern vec3_t m_PlayerAngles;
+
 #endif // REFRESH_H
