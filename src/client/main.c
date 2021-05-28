@@ -2369,6 +2369,11 @@ static size_t CL_Texture_m(char *buffer, size_t size)
 	return Q_scnprintf(buffer, size, "%s", trace.surface->name);
 }
 
+static size_t CL_PlayerPosZ_m(char *buffer, size_t size)
+{
+    return Q_scnprintf(buffer, size, "%.0f", SHORT2COORD(cl.frame.ps.pmove.origin[2]));
+}
+
 /*
 ===============
 CL_WriteConfig
@@ -2891,6 +2896,7 @@ static void CL_InitLocal(void)
     Cmd_AddMacro("cl_armor", CL_Armor_m, NULL);
     Cmd_AddMacro("cl_weaponmodel", CL_WeaponModel_m, NULL);
 	Cmd_AddMacro("cl_texture", CL_Texture_m, NULL); //Mako
+	Cmd_AddMacro("cl_playerpos_z", CL_PlayerPosZ_m, NULL);
 }
 
 /*
