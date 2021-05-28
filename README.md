@@ -25,3 +25,11 @@ Q2PRO Jump is a fork of Q2PRO, which aims to improve Q2Jump mod. It includes som
 ### Building
 
 Follow the guide in the INSTALL file. Use `config_jump_win32` as the make config instead.
+
+### New macros
+
+```
+cl_playerpos_z - Prints your origin Z-coordinate (not view origin).
+cl_ups - Can now use 'dynamic' as a color. Green = accelerating, red = decelerating. Eg. draw cl_ups x y dynamic
+cl_texture - Prints the texture you are looking at.
+```
