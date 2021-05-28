@@ -18,7 +18,10 @@ For building Q2PRO, consult the INSTALL file.
 For information on using and configuring Q2PRO, refer to client and server
 manuals available in doc/ subdirectory.
 
-Q2PRO Speed
-===========
+## Q2PRO Jump
 
-Q2PRO Speed extends Q2PRO with speedrun functionality, including:
+Q2PRO Jump is a fork of Q2PRO, which aims to improve Q2Jump mod. It includes some of Q2PRO Speed's functionality made by [kugelrund](https://github.com/kugelrund/).
+
+### Building
+
+Follow the guide in the INSTALL file. Use `config_jump_win32` as the make config instead.

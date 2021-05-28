@@ -29,9 +29,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define PRODUCT         "Q2PRO"
 
 #if USE_CLIENT
-#define APPLICATION     "q2pro-speed"
+#define APPLICATION     "q2pro-jump"
 #else
-#define APPLICATION     "q2proded-speed"
+#define APPLICATION     "q2proded-jump"
 #endif
 
 #define COM_DEFAULT_CFG     "default.cfg"
