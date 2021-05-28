@@ -520,11 +520,14 @@ else
     TARG_g := game$(CPU).so
 endif
 
-all: $(TARG_s) $(TARG_c) $(TARG_g)
+# Just default to client.
+client: $(TARG_c)
+
+all: $(TARG_c) $(TARG_s) $(TARG_g)
 
 default: all
 
-.PHONY: all default clean strip
+.PHONY: client all default clean strip
 
 # Define V=1 to show command line.
 ifdef V
