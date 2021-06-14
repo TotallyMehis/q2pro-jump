@@ -2269,6 +2269,72 @@ static color_t CL_Ups_dc()
     return out_clr;
 }
 
+static size_t CL_Rups_m(char *buffer, size_t size)
+{
+    vec3_t  vel;
+    float   speed;
+
+    if (cl.frame.clientNum == CLIENTNUM_NONE) {
+        if (size) {
+            *buffer = 0;
+        }
+        return 0;
+    }
+
+    if (!cls.demo.playback && cl.frame.clientNum == cl.clientNum &&
+        cl_predict->integer) {
+        VectorCopy(cl.predicted_velocity, vel);
+    } else {
+        VectorScale(cl.frame.ps.pmove.velocity, 0.125f, vel);
+    }
+
+    speed = VectorLength(vel);
+
+    // don't print anything if not moving as spectator.
+    if (cl.frame.ps.pmove.pm_type != PM_NORMAL && speed == 0) {
+        if (size) {
+            *buffer = 0;
+        }
+        return 0;
+    }
+
+    return Q_scnprintf(buffer, size, "%.f", speed);
+}
+
+static color_t CL_Rups_dc()
+{
+    static float        prev_speed;
+    float               new_speed;
+    vec3_t              vel;
+    color_t             out_clr;
+
+    out_clr.u32 = U32_WHITE;
+
+    if (cl.frame.clientNum == CLIENTNUM_NONE) {
+        return out_clr;
+    }
+
+    if (!cls.demo.playback && cl.frame.clientNum == cl.clientNum &&
+        cl_predict->integer) {
+        VectorCopy(cl.predicted_velocity, vel);
+    } else {
+        VectorScale(cl.frame.ps.pmove.velocity, 0.125f, vel);
+    }
+
+    // Compare speeds
+    new_speed = VectorLength(vel);
+    
+    if (new_speed > prev_speed) {
+        out_clr.u32 = U32_GREEN;
+    } else if (new_speed < prev_speed) {
+        out_clr.u32 = U32_RED;
+    }
+
+    prev_speed = new_speed;
+
+    return out_clr;
+}
+
 static size_t CL_Timer_m(char *buffer, size_t size)
 {
     int hour, min, sec;
@@ -2928,6 +2994,7 @@ static void CL_InitLocal(void)
 	Cmd_AddMacro("r_mfps", R_Mfps_m, NULL); // measured rendered frames per second
 	Cmd_AddMacro("cl_mfps", CL_Mfps_m, NULL); // measured frames per second
 	Cmd_AddMacro("cl_mmps", CL_Mmps_m, NULL); // measured moves per second
+	Cmd_AddMacro("cl_rups", CL_Rups_m, CL_Rups_dc); // real units per second (takes into account Z-axis)
 }
 
 /*
