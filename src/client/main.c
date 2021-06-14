@@ -2619,7 +2619,7 @@ static void cl_updaterate_changed(cvar_t *self)
 }
 #endif
 
-static inline int fps_to_msec(int fps)
+static inline int fps_to_msec(float fps)
 {
 #if 0
     return (1000 + fps / 2) / fps;
@@ -3151,7 +3151,7 @@ static int fps_to_clamped_msec(cvar_t *cvar, int min, int max)
     if (cvar->integer == 0)
         return fps_to_msec(max);
     else
-        return fps_to_msec(Cvar_ClampInteger(cvar, min, max));
+        return fps_to_msec(Cvar_ClampValue(cvar, min, max));
 }
 
 /*
