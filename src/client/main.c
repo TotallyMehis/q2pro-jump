@@ -109,6 +109,8 @@ centity_t   cl_entities[MAX_EDICTS];
 cmdbuf_t    cl_cmdbuf;
 char        cl_cmdbuf_text[MAX_STRING_CHARS];
 
+static int ref_msec, phys_msec, main_msec;
+
 //======================================================================
 
 typedef enum {
@@ -2300,17 +2302,43 @@ static size_t CL_DemoPos_m(char *buffer, size_t size)
                        "%d:%02d.%d", min, sec, framenum);
 }
 
-static size_t CL_Fps_m(char *buffer, size_t size)
+static size_t CL_Mfps_m(char *buffer, size_t size)
 {
     return Q_scnprintf(buffer, size, "%i", C_FPS);
 }
 
 static size_t R_Fps_m(char *buffer, size_t size)
 {
+    if (ref_msec == 0) {
+        if (size) {
+            *buffer = 0;
+        }
+
+        return 0;
+    }
+
+    return Q_scnprintf(buffer, size, "%.1f", 1000 / (float)ref_msec);
+}
+
+static size_t R_Mfps_m(char *buffer, size_t size)
+{
     return Q_scnprintf(buffer, size, "%i", R_FPS);
 }
 
 static size_t CL_Mps_m(char *buffer, size_t size)
+{
+    if (phys_msec == 0) {
+        if (size) {
+            *buffer = 0;
+        }
+        
+        return 0;
+    }
+
+    return Q_scnprintf(buffer, size, "%.1f", 1000 / (float)phys_msec);
+}
+
+static size_t CL_Mmps_m(char *buffer, size_t size)
 {
     return Q_scnprintf(buffer, size, "%i", C_MPS);
 }
@@ -2885,7 +2913,7 @@ static void CL_InitLocal(void)
     Cmd_AddMacro("cl_timer", CL_Timer_m, NULL);
     Cmd_AddMacro("cl_demopos", CL_DemoPos_m, NULL);
     Cmd_AddMacro("cl_ups", CL_Ups_m, CL_Ups_dc);
-    Cmd_AddMacro("cl_fps", CL_Fps_m, NULL);
+    Cmd_AddMacro("cl_fps", CL_Mps_m, NULL); // same thing as moves per second
     Cmd_AddMacro("r_fps", R_Fps_m, NULL);
     Cmd_AddMacro("cl_mps", CL_Mps_m, NULL);   // moves per second
     Cmd_AddMacro("cl_pps", CL_Pps_m, NULL);   // packets per second
@@ -2897,6 +2925,9 @@ static void CL_InitLocal(void)
     Cmd_AddMacro("cl_weaponmodel", CL_WeaponModel_m, NULL);
 	Cmd_AddMacro("cl_texture", CL_Texture_m, NULL); //Mako
 	Cmd_AddMacro("cl_playerpos_z", CL_PlayerPosZ_m, NULL);
+	Cmd_AddMacro("r_mfps", R_Mfps_m, NULL); // measured rendered frames per second
+	Cmd_AddMacro("cl_mfps", CL_Mfps_m, NULL); // measured frames per second
+	Cmd_AddMacro("cl_mmps", CL_Mmps_m, NULL); // measured moves per second
 }
 
 /*
@@ -3137,7 +3168,6 @@ static const char *const sync_names[] = {
 };
 #endif
 
-static int ref_msec, phys_msec, main_msec;
 static int ref_extra, phys_extra, main_extra;
 static sync_mode_t sync_mode;
 
