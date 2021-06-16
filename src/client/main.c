@@ -2830,6 +2830,144 @@ static const cmdreg_t c_client[] = {
     { "invuse" }, { "invprev" }, { "invnext" }, { "invdrop" },
     { "weapnext" }, { "weapprev" },
 
+    //
+    // jump mod specific server commands
+    //
+    { "team" },
+    
+    { "chasemode" },
+    { "observer" },
+
+    { "score" },
+
+    { "help" }, { "!help" },
+    { "commands" }, { "!commands" },
+
+    { "yes" }, { "no" },
+    { "mapvote" }, { "votemap" },
+    { "votetime" }, { "timevote" },
+
+    { "maplist" },
+    { "votelist" },
+    { "mapsleft" },
+    { "mapsdone" },
+    { "playerlist" },
+    { "playertimes" },
+    { "playerscores" },
+    { "playermaps" },
+    { "maptimes" }, { "maptimeswp" },
+    { "1st" },
+    { "lastmaps" },
+
+    { "jumpers" },
+    { "showjumps" },
+
+    { "store" }, { "recall" },
+
+    { "showtimes" },
+    { "velstore" },
+    { "cpsound" },
+    { "mute_cprep" },
+    
+    { "!fps" }, { "!seen" },
+
+    { "idle" },
+
+    { "race" },
+
+    { "replay" },
+    { "rstop" },
+    { "rep_repeat" },
+
+    { "goto" }, // Go to player's location
+
+    // + commands cannot easily be autocompleted and sent
+    // to the server simultaneously.
+    //{ "+hook" }, { "-hook" },
+    { "hook" }, { "unhook" },
+
+    //
+    // admins stuff
+    //
+    { "addmap" },
+    { "addball" },
+    { "addtime" },
+    { "addbox" },
+    { "addclip" },
+    { "skinent" },
+    { "skinbox" },
+    { "movebox" },
+    { "moveent" },
+    { "remallents" },
+    { "bring" },
+    { "cvote" },
+    { "pvote" },
+    { "mvote" },
+    { "dvotes" },
+    { "slap" },
+    { "rand" },
+    { "nominate" },
+    { "changepass" },
+    { "admin" },
+    { "unadmin" },
+    { "mset" },
+    { "gset" },
+    { "aset" },
+    { "lock" },
+    { "remtime" },
+    { "remalltimes" },
+    { "togglehud" },
+    { "nextmaps" },
+    { "changename" },
+    { "addadmin" },
+    { "remadmin" },
+    { "changeadmin" },
+    { "listadmin" },
+    { "ratereset" },
+    { "sortmaps" },
+    { "addent" },
+    { "alignent" },
+    { "shiftent" },
+    { "listents" }, { "entlist" },
+    { "rement" },
+    { "throwup" },
+    { "remmap" },
+    { "debug" },
+    { "updatescores" },
+    { "playtag" },
+    { "autorecord" },
+    { "cmsg" },
+    { "reset" },
+    { "ghost" },
+    { "boot" },
+    { "silence" },
+    { "unsilence" },
+    { "dummyvote" },
+    { "listbans" },
+    { "addban" },
+    { "banflags" },
+
+    // misc
+    { "autoadmin" }, // ???
+    { "players" },
+    { "say_person" }, { "p_say" }, { "!w" }, // pm
+    { "steam" }, // same as say_team
+    { "stuff" },
+    { "putaway" },
+    { "uptime" },
+    { "chaseme" },
+    { "cleanhud" },
+    { "compare" },
+    { "flashlight" },
+    { "id" },
+    { "!stats" }, { "stats" },
+    { "time" },
+    { "coord" },
+    { "whois" },
+    { "drop" },
+    { "skinlist" },
+    //{ "!login" }, { "!logout" },
+
     { NULL }
 };
 
