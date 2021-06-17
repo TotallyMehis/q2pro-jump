@@ -332,7 +332,16 @@ bool CL_ForwardToServer(void)
     char    *cmd;
 
     cmd = Cmd_Argv(0);
-    if (cls.state != ca_active || *cmd == '-' || *cmd == '+') {
+    if (cls.state != ca_active) {
+        return false;
+    }
+
+    if (*cmd == '-' || *cmd == '+') {
+        // HACK: Let +hook/-hook through
+        if (Q_stricmp(cmd+1, "hook") == 0) {
+            return true;
+        }
+
         return false;
     }
 
@@ -2881,9 +2890,7 @@ static const cmdreg_t c_client[] = {
 
     { "goto" }, // Go to player's location
 
-    // + commands cannot easily be autocompleted and sent
-    // to the server simultaneously.
-    //{ "+hook" }, { "-hook" },
+    { "+hook" }, { "-hook" },
     { "hook" }, { "unhook" },
 
     //
