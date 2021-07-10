@@ -2953,14 +2953,15 @@ static const cmdreg_t c_client[] = {
     { "listbans" },
     { "addban" },
     { "banflags" },
+    { "whois" },
+    { "stuff" },
 
     // misc
-    { "autoadmin" }, // ???
+    { "autoadmin" }, // Literally does nothing.
     { "players" },
     { "say_person" }, { "p_say" }, { "!w" }, // pm
     { "steam" }, // same as say_team
-    { "stuff" },
-    { "putaway" },
+    { "putaway" }, // close all menus
     { "uptime" },
     { "chaseme" },
     { "cleanhud" },
@@ -2970,7 +2971,6 @@ static const cmdreg_t c_client[] = {
     { "!stats" }, { "stats" },
     { "time" },
     { "coord" },
-    { "whois" },
     { "drop" },
     { "skinlist" },
     //{ "!login" }, { "!logout" },
