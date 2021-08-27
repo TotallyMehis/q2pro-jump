@@ -71,8 +71,6 @@ cvar_t  *gender_auto;
 cvar_t  *cl_vwep;
 
 // Additions for q2pro-speed
-cvar_t  *cl_drawSpeedrunTotalTimer;
-cvar_t  *cl_drawSpeedrunLevelTimer;
 cvar_t  *cl_drawStrafeHelper;
 cvar_t  *cl_strafeHelperCenter;
 cvar_t  *cl_strafeHelperCenterMarker;
@@ -3036,8 +3034,6 @@ static void CL_InitLocal(void)
     cl_nolerp = Cvar_Get("cl_nolerp", "0", 0);
 
     // Additions for q2pro-speed
-    cl_drawSpeedrunTotalTimer = Cvar_Get("cl_drawtotaltimer", "0", CVAR_ARCHIVE);
-    cl_drawSpeedrunLevelTimer = Cvar_Get("cl_drawleveltimer", "0", CVAR_ARCHIVE);
     cl_drawStrafeHelper = Cvar_Get("cl_drawstrafehelper", "0", CVAR_ARCHIVE);
     cl_strafeHelperCenter = Cvar_Get("cl_strafehelpercenter", "1", CVAR_ARCHIVE);
     cl_strafeHelperCenterMarker = Cvar_Get("cl_strafehelpercentermarker", "1", CVAR_ARCHIVE);
