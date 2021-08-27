@@ -4,9 +4,18 @@ Q2PRO Jump is a fork of Q2PRO, which aims to improve Q2Jump mod. It includes som
 
 ## Features
 
-- Strafe hud (Enable with `cl_drawstrafehelper 1`. Use `cl_strafehelper*`-cvars for options.)
+- Strafe hud
 - Decimal FPS values.
 - New and modified macros.
+- Q2Jump mod command autocompletion.
+
+## New commands
+
+```
+cl_drawstrafehelper - Draws strafe hud. Use cl_strafehelper*-cvars for options.
+
+cl_drawworldorigin - Draws world origin. Use cl_worldorigin*-cvars for options.
+```
 
 ## New macros
 
