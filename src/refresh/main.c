@@ -80,6 +80,9 @@ cvar_t *gl_vertexlight;
 cvar_t *gl_polyblend;
 cvar_t *gl_showerrors;
 
+cvar_t *cl_drawworldorigin;
+cvar_t *cl_worldorigin_size;
+
 // ==============================================================================
 
 static void GL_SetupFrustum(void)
@@ -337,6 +340,44 @@ static void GL_DrawSpriteModel(model_t *model)
     qglDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
+static void GL_DrawWorldOrigin(void)
+{
+    if (!cl_drawworldorigin->integer || !cl_worldorigin_size->integer) {
+        return;
+    }
+
+    const int origin_size = cl_worldorigin_size->integer;
+    static const uint32_t colors[6] = {
+        U32_RED,    U32_RED,
+        U32_GREEN,  U32_GREEN,
+        U32_BLUE,   U32_BLUE
+    };
+    vec3_t points[6] = {
+        {-1, 0, 0},
+        { 1, 0, 0},
+        { 0,-1, 0},
+        { 0, 1, 0},
+        { 0, 0,-1},
+        { 0, 0, 1}
+    };
+
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 3; j++) {
+            points[i][j] *= origin_size;
+        }
+    }
+
+    GL_LoadMatrix(glr.viewmatrix);
+    GL_BindTexture(0, TEXNUM_WHITE);
+    GL_StateBits(GLS_DEPTHTEST_DISABLE);
+    GL_ArrayBits(GLA_VERTEX | GLA_COLOR);
+    GL_ColorBytePointer(4, 0, (GLubyte *)colors);
+    GL_VertexPointer(3, 0, &points[0][0]);
+    qglDrawArrays(GL_LINES, 0, 6);
+    // TODO: Does state have to be reset?
+    //GL_StateBits(GLS_DEFAULT);
+}
+
 static void GL_DrawNullModel(void)
 {
     static const uint32_t colors[6] = {
@@ -548,6 +589,8 @@ void R_RenderFrame(refdef_t *fd)
         GL_DrawAlphaFaces();
     }
 
+    GL_DrawWorldOrigin();
+
     // go back into 2D mode
     GL_Setup2D();
 
@@ -751,6 +794,9 @@ static void GL_Register(void)
     gl_vertexlight->changed = gl_lightmap_changed;
     gl_polyblend = Cvar_Get("gl_polyblend", "1", 0);
     gl_showerrors = Cvar_Get("gl_showerrors", "1", 0);
+
+    cl_drawworldorigin = Cvar_Get("cl_drawworldorigin", "0", 0);
+    cl_worldorigin_size = Cvar_Get("cl_worldorigin_size", "4096", 0);
 
     gl_lightmap_changed(NULL);
     gl_modulate_entities_changed(NULL);
