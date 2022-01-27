@@ -619,7 +619,7 @@ static void dump_protocols(void)
         "--- --------------- ----- ----- ------ ---- ----\n");
 
     FOR_EACH_CLIENT(cl) {
-        Com_Printf("%3i %-15.15s %5d %5d %6"PRIz"  %s  %s\n",
+        Com_Printf("%3i %-15.15s %5d %5d %6zu  %s  %s\n",
                    cl->number, cl->name, cl->protocol, cl->version,
                    cl->netchan->maxpacketlen,
                    cl->has_zlib ? "yes" : "no ",
@@ -761,7 +761,7 @@ void SV_PrintMiscInfo(void)
                sv_client->version_string ? sv_client->version_string : "-");
     Com_Printf("protocol (maj/min)   %d/%d\n",
                sv_client->protocol, sv_client->version);
-    Com_Printf("maxmsglen            %"PRIz"\n", sv_client->netchan->maxpacketlen);
+    Com_Printf("maxmsglen            %zu\n", sv_client->netchan->maxpacketlen);
     Com_Printf("zlib support         %s\n", sv_client->has_zlib ? "yes" : "no");
     Com_Printf("netchan type         %s\n", sv_client->netchan->type ? "new" : "old");
     Com_Printf("ping                 %d\n", sv_client->ping);
@@ -911,6 +911,39 @@ static void SV_StuffCvar_f(void)
 
     sv_client = NULL;
     sv_player = NULL;
+}
+
+/*
+==================
+SV_PrintAll_f
+
+Print raw string to all clients.
+==================
+*/
+static void SV_PrintAll_f(void)
+{
+    client_t *client;
+    char *s;
+
+    if (!svs.initialized) {
+        Com_Printf("No server running.\n");
+        return;
+    }
+
+    if (Cmd_Argc() < 2) {
+        Com_Printf("Usage: %s <raw text>\n", Cmd_Argv(0));
+        return;
+    }
+
+    s = COM_StripQuotes(Cmd_RawArgs());
+    FOR_EACH_CLIENT(client) {
+        if (client->state > cs_zombie)
+            SV_ClientPrintf(client, PRINT_HIGH, "%s\n", s);
+    }
+
+    if (COM_DEDICATED) {
+        Com_Printf("%s\n", s);
+    }
 }
 
 static void SV_PickClient_f(void)
@@ -1696,6 +1729,7 @@ static const cmdreg_t c_server[] = {
     { "stuff", SV_Stuff_f, SV_SetPlayer_c },
     { "stuffall", SV_StuffAll_f },
     { "stuffcvar", SV_StuffCvar_f, SV_SetPlayer_c },
+    { "printall", SV_PrintAll_f },
     { "map", SV_Map_f, SV_Map_c },
     { "demomap", SV_DemoMap_f },
     { "gamemap", SV_GameMap_f, SV_Map_c },

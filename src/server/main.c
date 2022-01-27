@@ -818,10 +818,9 @@ static bool parse_enhanced_params(conn_params_t *p)
 
 static char *userinfo_ip_string(void)
 {
-    static char s[MAX_QPATH];
-
     // fake up reserved IPv4 address to prevent IPv6 unaware mods from exploding
     if (net_from.type == NA_IP6 && !(g_features->integer & GMF_IPV6_ADDRESS_AWARE)) {
+        static char s[MAX_QPATH];
         uint8_t res = 0;
         int i;
 
@@ -1578,7 +1577,7 @@ static void update_client_mtu(client_t *client, int ee_info)
     if (newpacketlen >= netchan->maxpacketlen)
         return;
 
-    Com_Printf("Fixing up maxmsglen for %s: %"PRIz" --> %"PRIz"\n",
+    Com_Printf("Fixing up maxmsglen for %s: %zu --> %zu\n",
                client->name, netchan->maxpacketlen, newpacketlen);
     netchan->maxpacketlen = newpacketlen;
 }
@@ -1705,8 +1704,6 @@ static void SV_PrepWorldFrame(void)
     }
 #endif
 
-    sv.tracecount = 0;
-
     if (!SV_FRAMESYNC)
         return;
 
@@ -1779,7 +1776,7 @@ static void SV_RunGameFrame(void)
 #endif
 
     if (msg_write.cursize) {
-        Com_WPrintf("Game left %"PRIz" bytes "
+        Com_WPrintf("Game left %zu bytes "
                     "in multicast buffer, cleared.\n",
                     msg_write.cursize);
         SZ_Clear(&msg_write);
