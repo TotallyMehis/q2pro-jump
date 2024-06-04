@@ -918,12 +918,12 @@ void Qcommon_Init(int argc, char **argv)
 
     //Cmd_AddCommand("setenv", Com_Setenv_f);
 
-    Cmd_AddMacro("com_date", Com_Date_m);
-    Cmd_AddMacro("com_time", Com_Time_m);
-    Cmd_AddMacro("com_uptime", Com_Uptime_m);
-    Cmd_AddMacro("com_uptime_long", Com_UptimeLong_m);
-    Cmd_AddMacro("random", Com_Random_m);
-    Cmd_AddMacro("com_maplist", Com_MapList_m);
+    Cmd_AddMacro("com_date", Com_Date_m, NULL);
+    Cmd_AddMacro("com_time", Com_Time_m, NULL);
+    Cmd_AddMacro("com_uptime", Com_Uptime_m, NULL);
+    Cmd_AddMacro("com_uptime_long", Com_UptimeLong_m, NULL);
+    Cmd_AddMacro("random", Com_Random_m, NULL);
+    Cmd_AddMacro("com_maplist", Com_MapList_m, NULL);
 
     // add any system-wide configuration files
     Sys_AddDefaultConfig();
@@ -997,8 +997,8 @@ void Qcommon_Init(int argc, char **argv)
     Com_AddConfigFile(COM_POSTINIT_CFG, FS_TYPE_REAL);
 
     Com_Printf("====== " PRODUCT " initialized ======\n\n");
-    Com_NPrintf(APPLICATION " " VERSION ", " __DATE__ "\n");
-    Com_Printf("https://github.com/skullernet/q2pro\n\n");
+    Com_LPrintf(PRINT_NOTICE, APPLICATION " " VERSION ", " __DATE__ "\n");
+    Com_Printf("https://github.com/TotallyMehis/q2pro-jump (fork of q2pro)\n\n");
     Com_DPrintf("Compiled features: %s\n", Com_GetFeatures());
 
     time(&com_startTime);

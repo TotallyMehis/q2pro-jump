@@ -85,6 +85,9 @@ cvar_t *gl_lightgrid;
 cvar_t *gl_polyblend;
 cvar_t *gl_showerrors;
 
+cvar_t *cl_drawworldorigin;
+cvar_t *cl_worldorigin_size;
+
 // ==============================================================================
 
 static const vec_t quad_tc[8] = { 0, 1, 0, 0, 1, 1, 1, 0 };
@@ -371,6 +374,44 @@ static void GL_DrawSpriteModel(const model_t *model)
     GL_TexCoordPointer(2, 0, quad_tc);
     GL_VertexPointer(3, 0, &points[0][0]);
     qglDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
+static void GL_DrawWorldOrigin(void)
+{
+    if (!cl_drawworldorigin->integer || !cl_worldorigin_size->integer) {
+        return;
+    }
+
+    const int origin_size = cl_worldorigin_size->integer;
+    static const uint32_t colors[6] = {
+        U32_RED,    U32_RED,
+        U32_GREEN,  U32_GREEN,
+        U32_BLUE,   U32_BLUE
+    };
+    vec3_t points[6] = {
+        {-1, 0, 0},
+        { 1, 0, 0},
+        { 0,-1, 0},
+        { 0, 1, 0},
+        { 0, 0,-1},
+        { 0, 0, 1}
+    };
+
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 3; j++) {
+            points[i][j] *= origin_size;
+        }
+    }
+
+    GL_LoadMatrix(glr.viewmatrix);
+    GL_BindTexture(0, TEXNUM_WHITE);
+    GL_StateBits(GLS_DEPTHTEST_DISABLE);
+    GL_ArrayBits(GLA_VERTEX | GLA_COLOR);
+    GL_ColorBytePointer(4, 0, (GLubyte *)colors);
+    GL_VertexPointer(3, 0, &points[0][0]);
+    qglDrawArrays(GL_LINES, 0, 6);
+    // TODO: Does state have to be reset?
+    //GL_StateBits(GLS_DEFAULT);
 }
 
 static void GL_DrawNullModel(void)
@@ -729,6 +770,8 @@ void R_RenderFrame(const refdef_t *fd)
         qglBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
+    GL_DrawWorldOrigin();
+
     // go back into 2D mode
     GL_Setup2D();
 
@@ -941,7 +984,7 @@ static void GL_Register(void)
     gl_novis->changed = gl_novis_changed;
     gl_lockpvs = Cvar_Get("gl_lockpvs", "0", CVAR_CHEAT);
     gl_lightmap = Cvar_Get("gl_lightmap", "0", CVAR_CHEAT);
-    gl_fullbright = Cvar_Get("r_fullbright", "0", CVAR_CHEAT);
+    gl_fullbright = Cvar_Get("r_fullbright", "0", 0);
     gl_fullbright->changed = gl_lightmap_changed;
     gl_vertexlight = Cvar_Get("gl_vertexlight", "0", 0);
     gl_vertexlight->changed = gl_lightmap_changed;
@@ -949,12 +992,15 @@ static void GL_Register(void)
     gl_polyblend = Cvar_Get("gl_polyblend", "1", 0);
     gl_showerrors = Cvar_Get("gl_showerrors", "1", 0);
 
+    cl_drawworldorigin = Cvar_Get("cl_drawworldorigin", "0", 0);
+    cl_worldorigin_size = Cvar_Get("cl_worldorigin_size", "4096", 0);
+
     gl_lightmap_changed(NULL);
     gl_modulate_entities_changed(NULL);
     gl_swapinterval_changed(gl_swapinterval);
 
     Cmd_AddCommand("strings", GL_Strings_f);
-    Cmd_AddMacro("gl_viewcluster", GL_ViewCluster_m);
+    Cmd_AddMacro("gl_viewcluster", GL_ViewCluster_m, NULL);
 }
 
 static void GL_Unregister(void)

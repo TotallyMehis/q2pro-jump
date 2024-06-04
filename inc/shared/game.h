@@ -19,6 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #pragma once
 
 #include "shared/list.h"
+#include "speedrun/timer.h"
 
 //
 // game.h -- game dll information visible to server

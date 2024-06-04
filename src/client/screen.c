@@ -18,6 +18,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 // cl_scrn.c -- master for refresh, status bar, console, chat, notify, etc
 
 #include "client.h"
+#include "speedrun/timer.h"
+#include "../speedrun/strafe_helper/strafe_helper.h"
 
 #define STAT_PICS       11
 #define STAT_MINUS      (STAT_PICS - 1)  // num frame for '-' stats digit
@@ -690,6 +692,9 @@ static void SCR_Draw_f(void)
         c = Cmd_Argv(4);
         if (!strcmp(c, "alt")) {
             flags |= UI_ALTCOLOR;
+        } else if (!strcmp(c, "dynamic")) {
+            flags |= UI_DYNAMICCOLOR;
+            flags &= ~UI_IGNORECOLOR;
         } else if (strcmp(c, "none")) {
             if (!SCR_ParseColor(c, &color)) {
                 Com_Printf("Unknown color '%s'\n", c);
@@ -703,6 +708,13 @@ static void SCR_Draw_f(void)
     macro = Cmd_FindMacro(s);
     if (!macro) {
         cvar = Cvar_WeakGet(s);
+    }
+
+    if (flags & UI_DYNAMICCOLOR) {
+        if (!macro || !macro->colorfunction) {
+            Com_Printf("'%s' does not support dynamic colors!\n", s);
+            return;
+        }
     }
 
     FOR_EACH_DRAWOBJ(obj) {
@@ -813,6 +825,9 @@ static void SCR_DrawObjects(void)
             R_SetColor(obj->color.u32);
         }
         if (obj->macro) {
+            if ((obj->flags & UI_DYNAMICCOLOR) && obj->macro->colorfunction) {
+                R_SetColor(obj->macro->colorfunction().u32);
+            }
             obj->macro->function(buffer, sizeof(buffer));
             SCR_DrawString(x, y, obj->flags, buffer);
         } else {
@@ -2064,6 +2079,18 @@ draw:
     SCR_ExecuteLayoutString(cl.layout);
 }
 
+static void SCR_DrawStrafeHelper(void)
+{
+    const struct StrafeHelperParams params = {
+        .center = cl_strafeHelperCenter->integer,
+        .center_marker = cl_strafeHelperCenterMarker->integer,
+        .scale = cl_strafeHelperScale->value,
+        .height = cl_strafeHelperHeight->value,
+        .y = cl_strafeHelperY->value,
+    };
+    StrafeHelper_Draw(&params, scr.hud_width, scr.hud_height);
+}
+
 static void SCR_Draw2D(void)
 {
     if (scr_draw2d->integer <= 0)
@@ -2076,6 +2103,10 @@ static void SCR_Draw2D(void)
 
     scr.hud_height = Q_rint(scr.hud_height * scr.hud_scale);
     scr.hud_width = Q_rint(scr.hud_width * scr.hud_scale);
+
+    if (cl_drawStrafeHelper->integer) {
+        SCR_DrawStrafeHelper();
+    }
 
     // crosshair has its own color and alpha
     SCR_DrawCrosshair();

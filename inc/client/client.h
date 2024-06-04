@@ -122,6 +122,7 @@ void SCR_UpdateScreen(void);
 #define UI_AUTOWRAP         BIT(8)
 #define UI_MULTILINE        BIT(9)
 #define UI_DRAWCURSOR       BIT(10)
+#define UI_DYNAMICCOLOR     BIT(11)
 
 extern const uint32_t   colorTable[8];
 

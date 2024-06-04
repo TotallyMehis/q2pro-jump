@@ -722,7 +722,7 @@ void Cmd_Macro_g(genctx_t *ctx)
 Cmd_AddMacro
 ============
 */
-void Cmd_AddMacro(const char *name, xmacro_t function)
+void Cmd_AddMacro(const char *name, xmacro_t function, xdynamiccolor_t colorfunction)
 {
     cmd_macro_t *macro;
     unsigned hash;
@@ -745,6 +745,7 @@ void Cmd_AddMacro(const char *name, xmacro_t function)
     macro = Cmd_Malloc(sizeof(*macro));
     macro->name = name;
     macro->function = function;
+    macro->colorfunction = colorfunction;
     macro->next = cmd_macros;
     cmd_macros = macro;
 

@@ -1865,8 +1865,8 @@ void NET_Init(void)
     Cmd_AddCommand("showip", NET_ShowIP_f);
     Cmd_AddCommand("dns", NET_Dns_f);
 
-    Cmd_AddMacro("net_uprate", NET_UpRate_m);
-    Cmd_AddMacro("net_dnrate", NET_DnRate_m);
+    Cmd_AddMacro("net_uprate", NET_UpRate_m, NULL);
+    Cmd_AddMacro("net_dnrate", NET_DnRate_m, NULL);
 }
 
 /*

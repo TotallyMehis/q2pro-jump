@@ -576,6 +576,14 @@ extern cvar_t   *cl_thirdperson_range;
 
 extern cvar_t   *cl_async;
 
+// Additions for q2pro-speed
+extern cvar_t    *cl_drawStrafeHelper;
+extern cvar_t    *cl_strafeHelperCenter;
+extern cvar_t    *cl_strafeHelperCenterMarker;
+extern cvar_t    *cl_strafeHelperHeight;
+extern cvar_t    *cl_strafeHelperScale;
+extern cvar_t    *cl_strafeHelperY;
+
 //
 // userinfo
 //
@@ -627,6 +635,8 @@ bool CL_CheckForIgnore(const char *s);
 void CL_LoadFilterList(string_entry_t **list, const char *name, const char *comments, size_t maxlen);
 
 void cl_timeout_changed(cvar_t *self);
+
+static color_t CL_Rups_dc(void);
 
 //
 // precache.c
