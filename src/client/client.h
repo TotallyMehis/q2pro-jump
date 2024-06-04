@@ -636,8 +636,6 @@ void CL_LoadFilterList(string_entry_t **list, const char *name, const char *comm
 
 void cl_timeout_changed(cvar_t *self);
 
-static color_t CL_Rups_dc(void);
-
 //
 // precache.c
 //

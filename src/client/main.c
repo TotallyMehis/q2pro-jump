@@ -2152,7 +2152,9 @@ static size_t CL_Ups_m(char *buffer, size_t size) {
   return Q_scnprintf(buffer, size, "%.f", speed);
 }
 
-static color_t CL_Ups_dc() {
+static color_t CL_Ups_dc(void);
+
+static color_t CL_Ups_dc(void) {
   static float prev_speed;
   float new_speed;
   vec3_t vel;
@@ -2210,7 +2212,9 @@ static size_t CL_Rups_m(char *buffer, size_t size) {
   return Q_scnprintf(buffer, size, "%.f", speed);
 }
 
-static color_t CL_Rups_dc() {
+static color_t CL_Rups_dc(void);
+
+static color_t CL_Rups_dc(void) {
   static float prev_speed;
   float new_speed;
   vec3_t vel;

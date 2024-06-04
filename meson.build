@@ -74,6 +74,9 @@ ui_src = [
   'src/client/ui/script.c',
   'src/client/ui/servers.c',
   'src/client/ui/ui.c',
+  'src/speedrun/strafe_helper/strafe_helper.c',
+  'src/speedrun/timer.c',
+  'src/speedrun/timer_helper.c',
 ]
 
 refresh_src = [
